@@ -1,38 +1,26 @@
-
-def switching_mergesort(arr):
-    b = arr[:]
-    msort(0, len(arr)-1, arr, b)
-
-
-def msort(p, r, a, b):
-    if (p < r):
-        q = p+r >> 1
-        msort(p, q, b, a)
-        msort(q+1, r, b, a)
-        switching_merge(p, q, r, b, a)
-
-
-def switching_merge(p, q, r, c, d):
-    i, j, t = p, q+1, p
-    while i <= q and j <= r:
-        if c[i] <= c[j]:
-            d[t] = c[i]
-            i += 1
-        else:
-            d[t] = c[j]
-            j += 1
-        t += 1
-    while i <= q:
-        d[t] = c[i]
-        t += 1
-        i += 1
-    while j <= r:
-        d[t] = c[j]
-        t += 1
-        j += 1
-
+import sys
+input = sys.stdin.readline
 
 n = int(input())
-arr = [int(input())for _ in range(n)]
-switching_mergesort(arr)
-print(' '.join(map(str, arr)))
+arr = [0]+[int(input())for _ in range(n)]
+
+
+def percolate_down(arr, n, s=1):
+    while ((s << 1) <= n):
+        nxt = (s << 1) if arr[s << 1] > arr[s] else s
+        nxt = (s << 1 | 1) if (s << 1 | 1) <= n and arr[s <<
+                                                        1 | 1] > arr[nxt] else nxt
+        if s == nxt:
+            return
+        arr[nxt], arr[s] = arr[s], arr[nxt]
+        s = nxt
+
+
+for i in range(n >> 1, 0, -1):
+    percolate_down(arr, n, i)
+for i in range(n, 1, -1):
+    arr[1], arr[i] = arr[i], arr[1]
+    percolate_down(arr, i-1)
+
+for i in range(1, n+1):
+    sys.stdout.write(str(arr[i])+'\n')
