@@ -1,12 +1,11 @@
-n = input()[::-1]
-s = ''
-for x in n:
-    y = int(x)
-    for _ in range(3):
-        s += str(y & 1)
-        y >>= 1
-s = s.rstrip('0')
-if s:
-    print(s[::-1])
-else:
-    print(0)
+n = int(input())
+s = [input()for _ in range(n)]
+m = len(s[0])
+ans = ['?']*m
+for i in range(m):
+    c = s[0][i]
+    for j in range(1, n):
+        if c != s[j][i]:
+            c = '?'
+    ans[i] = c
+print(''.join(ans))
